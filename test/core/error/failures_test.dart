@@ -15,4 +15,10 @@ void main() {
       expect(CacheFailure(), isA<Failure>());
     });
   });
+
+  group('NotFoundFailure', () {
+    test('is a Failure', () {
+      expect(NotFoundFailure(), isA<Failure>());
+    });
+  });
 }
