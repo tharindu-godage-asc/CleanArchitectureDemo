@@ -53,3 +53,13 @@ app.*.map.json
 # Generated Dart files
 **/*.g.dart
 **/*.freezed.dart
+
+# This project only targets android/ios; ignore other platform
+# scaffolding that flutter tooling may regenerate locally.
+/linux/
+/macos/
+/web/
+/windows/
+
+# Local-only documentation notes
+/docs/
