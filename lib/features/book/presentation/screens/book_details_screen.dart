@@ -4,31 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
 
-// class BookDetailsScreen extends ConsumerWidget {
-//   const new({super.key, required this.bookId});
-//
-//   final int bookId;
-//
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
-//     appBar: AppBar(),
-//     body: ref
-//         .watch(bookProvider(bookId))
-//         .when(
-//           data: (book) => Column(
-//             crossAxisAlignment: .start,
-//             children: [
-//               Text(context.l10n.bookAuthors(book.author)),
-//               Text(context.l10n.bookIsbn(book.isbn)),
-//               Text(context.l10n.bookYear(book.publishedYear)),
-//             ],
-//           ),
-//           error: (error, _) => Center(child: Text('Error: $error')),
-//           loading: () => Center(child: CircularProgressIndicator()),
-//         ),
-//   );
-// }
-
 class BookDetailsScreen extends ConsumerStatefulWidget {
   const new({super.key, required this.bookId});
 
@@ -51,14 +26,6 @@ class _BookDetailsScreenState extends ConsumerState<BookDetailsScreen> {
               Text(context.l10n.bookAuthors(book.author)),
               Text(context.l10n.bookIsbn(book.isbn)),
               Text(context.l10n.bookYear(book.publishedYear)),
-              ElevatedButton(
-                onPressed: () {
-                  ref
-                      .read(bookDetailsProvider(widget.bookId).notifier)
-                      .mutateBook();
-                },
-                child: Text('MUTATE THE DATA'),
-              ),
             ],
           ),
           error: (error, _) => Center(child: Text('Error: $error')),

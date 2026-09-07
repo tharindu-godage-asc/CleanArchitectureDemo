@@ -38,4 +38,50 @@ void main() {
       );
     });
   });
+
+  group('getBookById', () {
+    test('returns the matching book from the local data source', () async {
+      final repository = BookRepositoryImpl(
+        FakeBookLocalDataSource(getBooksResult: () async => [sampleBookModel]),
+      );
+
+      final result = await repository.getBookById(sampleBook.id);
+
+      result.match((failure) => fail('Expected a book, but received $failure'), (
+        book,
+      ) {
+        expect(book.id, sampleBook.id);
+        expect(book.title, sampleBook.title);
+      });
+    });
+
+    test('returns NotFoundFailure when no book matches the id', () async {
+      final repository = BookRepositoryImpl(
+        FakeBookLocalDataSource(getBooksResult: () async => [sampleBookModel]),
+      );
+
+      final result = await repository.getBookById(missingBookId);
+
+      result.match(
+        (failure) => expect(failure, isA<NotFoundFailure>()),
+        (book) => fail('Expected a failure, but received $book'),
+      );
+    });
+
+    test('returns CacheFailure when the local data source throws', () async {
+      final repository = BookRepositoryImpl(
+        FakeBookLocalDataSource(
+          getBooksResult: () =>
+              Future<List<BookModel>>.error(Exception('disk')),
+        ),
+      );
+
+      final result = await repository.getBookById(sampleBook.id);
+
+      result.match(
+        (failure) => expect(failure, isA<CacheFailure>()),
+        (book) => fail('Expected a failure, but received $book'),
+      );
+    });
+  });
 }

@@ -25,6 +25,8 @@ final sampleBookModel = BookModel(
   availableCopies: 4,
 );
 
+final missingBookId = 999;
+
 class FakeBookLocalDataSource implements BookLocalDataSource {
   FakeBookLocalDataSource({required this.getBooksResult});
 
@@ -35,14 +37,24 @@ class FakeBookLocalDataSource implements BookLocalDataSource {
 }
 
 class FakeBookRepository implements BookRepository {
-  FakeBookRepository(this.result);
+  FakeBookRepository(this.result, {this.bookByIdResult});
 
   Either<Failure, List<Book>> result;
+  Either<Failure, Book>? bookByIdResult;
   var getBooksCallCount = 0;
+  var getBookByIdCallCount = 0;
+  int? lastRequestedId;
 
   @override
   Future<Either<Failure, List<Book>>> getBooks() async {
     getBooksCallCount++;
     return result;
+  }
+
+  @override
+  Future<Either<Failure, Book>> getBookById(int id) async {
+    getBookByIdCallCount++;
+    lastRequestedId = id;
+    return bookByIdResult!;
   }
 }
