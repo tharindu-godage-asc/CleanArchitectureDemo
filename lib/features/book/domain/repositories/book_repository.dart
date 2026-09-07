@@ -5,4 +5,6 @@ import '../entities/book.dart';
 
 abstract class BookRepository {
   Future<Either<Failure, List<Book>>> getBooks();
+
+  Future<Either<Failure, Book>> getBookById(int id);
 }

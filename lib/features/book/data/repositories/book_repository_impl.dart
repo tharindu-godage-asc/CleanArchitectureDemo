@@ -19,4 +19,17 @@ class BookRepositoryImpl implements BookRepository {
       return Left(CacheFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Book>> getBookById(int id) async {
+    try {
+      final models = await localDataSource.getBooks();
+      final match = models.firstWhere((book) => book.id == id);
+      return Right(match);
+    } on StateError {
+      return Left(NotFoundFailure());
+    } catch (e) {
+      return Left(CacheFailure());
+    }
+  }
 }
