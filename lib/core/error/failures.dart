@@ -9,3 +9,5 @@ sealed class Failure {
 }
 
 class CacheFailure extends Failure {}
+
+class NotFoundFailure extends Failure {}
